@@ -1,0 +1,231 @@
+/* =========================================================
+   North Consulting — Common Stylesheet (Minimal)
+   原則：枠線・影・塗りで区切らない。区切りは余白とタイポグラフィで作る。
+   線は「表・データ一覧の行罫」だけに限定する。
+   ========================================================= */
+:root {
+  /* --- Brand（リングロゴ.png の球体から抽出） --- */
+  --logo-light:  #518E6F;
+  --logo-mid:    #2F5B49;
+  --logo-dark:   #14372B;
+  --logo-deep:   #0D2A21;
+
+  /* --- Neutrals --- */
+  --white:       #FFFFFF;
+  --ink-900:     #1A1A1A;   /* 見出し */
+  --ink-700:     #3F3F3F;   /* 本文 */
+  --ink-500:     #757575;   /* 補足 */
+  --ink-400:     #94A3B8;   /* 英字ラベル・日付など（slate-400） */
+  --hairline:    #ECEEF0;   /* 表の行罫のみ */
+
+  /* --- Role tokens --- */
+  --bg-base:        var(--white);
+  --bg-alt:         var(--white);
+  --bg-tint:        var(--white);
+  --border-subtle:  var(--hairline);
+  --border-strong:  #C9CED4;
+  --text-heading:   var(--ink-900);
+  --text-body:      var(--ink-700);
+  --text-muted:     var(--ink-500);
+  --text-faint:     var(--ink-400);
+  --text-inverse:   var(--white);
+  --accent:         var(--logo-mid);
+  --accent-hover:   var(--logo-dark);
+  --accent-text:    var(--logo-mid);
+  --danger:         #B42318;
+
+  --font-sans: "Plus Jakarta Sans", "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  --ease: cubic-bezier(.22,1,.36,1);
+  --header-h: 88px;
+  --section-y: clamp(128px, 16vw, 240px);
+}
+
+/* ---------- Base ---------- */
+html { scroll-padding-top: calc(var(--header-h) + 24px); }
+html body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-base); color: var(--text-body);
+  font-size: 15px; line-height: 2.05; letter-spacing: 0;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  line-break: strict; overflow-wrap: anywhere;
+}
+@media (min-width: 1024px) { html body { font-size: 16px; } }
+body :is(h1, h2, h3, h4) { color: var(--text-heading); font-weight: 800; font-feature-settings: "palt"; letter-spacing: -.01em; text-wrap: balance; }
+::selection { background: var(--accent); color: var(--text-inverse); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 4px; }
+.nb { word-break: keep-all; overflow-wrap: normal; }
+.num { font-variant-numeric: lining-nums tabular-nums; }
+.en { font-family: "Plus Jakarta Sans", sans-serif; }
+
+/* ---------- Layout：幅を絞り、左右に余白を残す ---------- */
+.wrap { width: 100%; max-width: calc(1024px + 96px); margin-inline: auto; padding-inline: 28px; }
+.wrap-wide { width: 100%; max-width: 1320px; margin-inline: auto; padding-inline: 28px; }
+@media (min-width: 1024px) { .wrap { padding-inline: 48px; } .wrap-wide { padding-inline: 48px; } }
+.section { position: relative; padding-block: var(--section-y); }
+.section-alt { background: none; }
+.rule { border-top: 1px solid var(--hairline); }
+/* 見出しラベルは本文の上に置き、本文は全幅で使う */
+.side { display: grid; gap: 40px; }
+
+/* ---------- Typography ---------- */
+.eyebrow { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-faint); line-height: 1; }
+.side-ja { margin-top: 10px; font-size: 12px; color: var(--text-faint); letter-spacing: 0; }
+.h-display { font-size: clamp(2.5rem, 6.6vw, 5.75rem); line-height: 1.22; letter-spacing: -.02em; font-weight: 800; }
+.h-page    { font-size: clamp(2.75rem, 6.4vw, 5.5rem); line-height: 1.12; letter-spacing: -.02em; font-weight: 800; }
+.h-section { font-size: clamp(2rem, 4.8vw, 3.75rem); line-height: 1.32; letter-spacing: -.015em; font-weight: 800; }
+.h-sub     { font-size: clamp(1.5rem, 2.8vw, 2.25rem); line-height: 1.45; font-weight: 800; }
+.lead { font-size: clamp(15px, 1.25vw, 17px); line-height: 2.15; color: var(--text-body); max-width: 40em; }
+.small { font-size: 14px; line-height: 2; color: var(--text-body); }
+.note { font-size: 12px; line-height: 1.9; color: var(--text-faint); }
+.label { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-faint); }
+.idx { font-family: "Plus Jakarta Sans", sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--text-faint); }
+/* 本文中に残る詰めすぎ・広げすぎの字間指定を自然に戻す */
+[class*="tracking-["] { letter-spacing: 0 !important; }
+
+/* ---------- Figures ---------- */
+.fig { display: flex; align-items: baseline; flex-wrap: wrap; color: var(--text-heading); }
+.fig-num { font-family: "Plus Jakarta Sans", sans-serif; font-weight: 800; color: var(--text-heading);
+  font-size: clamp(4.5rem, 9vw, 8rem); line-height: .9; letter-spacing: -.045em; font-variant-numeric: lining-nums tabular-nums; }
+.fig-num.jp { font-family: "Noto Sans JP", sans-serif; letter-spacing: -.02em; font-size: clamp(3.5rem, 7vw, 6rem); }
+.fig-unit { font-size: clamp(1rem, 1.4vw, 1.25rem); font-weight: 600; color: var(--text-body); margin-left: .3em; }
+.fig-pre  { font-size: clamp(.875rem, 1.1vw, 1rem); font-weight: 600; color: var(--text-body); margin-right: .4em; }
+.fig-cell { padding: 0; }
+
+/* ---------- Blocks：枠・影・塗りなし ---------- */
+.card, .card-tint, .node, .node-hi { background: none; border: 0; box-shadow: none; border-radius: 0; padding: 0; }
+.card-hover { transition: none; }
+.chip { display: inline-block; font-size: 14px; color: var(--text-heading); line-height: 1.6; }
+.chip + .chip::before { content: "／"; margin: 0 .7em; color: var(--text-faint); }
+.icon-dot { display: inline-grid; place-items: center; width: 28px; height: 28px; color: var(--accent); }
+.icon-dot svg { width: 26px; height: 26px; stroke-width: 1.5; }
+.node-hi .label, .node-hi p { color: var(--accent); }
+.flow-arrow { display: flex; flex-direction: column; justify-content: center; gap: 8px; font-size: 12px; color: var(--text-faint); }
+.flow-arrow .ln::before { display: none; }
+
+/* 強調の一文：箱ではなく大きな文字で */
+.panel-emph { background: none; }
+.on-dark { color: inherit; }
+.statement { display: block; font-size: clamp(1.5rem, 3vw, 2.375rem); font-weight: 800; line-height: 1.5; color: var(--accent); letter-spacing: -.01em; }
+
+/* ---------- Table：行罫のみ ---------- */
+.tbl { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.9; }
+.tbl th, .tbl td { padding: 24px 24px 24px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--hairline); }
+.tbl thead th { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--text-faint); border-bottom: 1px solid var(--border-strong); }
+.tbl thead th.hl { color: var(--accent); }
+.tbl tbody th { width: 22%; font-weight: 700; color: var(--text-heading); }
+.tbl td { color: var(--text-muted); }
+.tbl td.hl { color: var(--text-heading); font-weight: 700; }
+.tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tbl-scroll .tbl { min-width: 680px; }
+
+/* ---------- Buttons：角は控えめ（2px）、影なし ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 14px;
+  min-height: 56px; padding: 0 32px; border-radius: 2px; font-size: 15px; font-weight: 700; letter-spacing: .02em; line-height: 1.4;
+  transition: background-color .3s var(--ease), color .3s var(--ease); }
+.btn .ico { width: 16px; height: 16px; transition: transform .35s var(--ease); }
+.btn:hover .ico { transform: translateX(4px); }
+.btn-primary, .btn-light { background: var(--accent); color: var(--text-inverse); }
+.btn-primary:hover, .btn-light:hover { background: var(--accent-hover); }
+.btn-secondary { background: none; color: var(--text-heading); padding: 0 8px; text-decoration: underline; text-underline-offset: 8px; text-decoration-thickness: 1px; }
+.btn-secondary:hover { color: var(--accent); }
+.btn-sm { min-height: 44px; padding: 0 22px; font-size: 13.5px; }
+.link-arrow { display: inline-flex; align-items: center; gap: 10px; color: var(--accent-text); font-weight: 700; font-size: 14px; }
+.link-arrow .ico { width: 15px; height: 15px; transition: transform .35s var(--ease); }
+.link-arrow:hover { color: var(--accent-hover); }
+.link-arrow:hover .ico { transform: translateX(4px); }
+.text-link { color: var(--accent-text); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.text-link:hover { color: var(--accent-hover); }
+
+/* ---------- Header：白一色、線・影なし ---------- */
+.site-header { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--header-h); background: rgba(255,255,255,.97); }
+.brand { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.logo-mark { display: inline-flex; align-items: center; width: 40px; height: 40px; }
+.logo-mark img { width: 40px; height: 40px; display: block; }
+.brand-en { display: block; font-size: 16px; font-weight: 800; color: var(--ink-900); line-height: 1.25; }
+.brand-ja { display: block; font-size: 11px; font-weight: 400; color: var(--text-faint); line-height: 1.6; }
+.gnav { gap: 40px; }
+.nav-link { position: relative; display: inline-block; font-size: 14px; font-weight: 500; color: var(--ink-700); padding: 30px 0; white-space: nowrap; transition: color .3s; }
+.nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: 22px; height: 2px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease); }
+.nav-link:hover { color: var(--ink-900); }
+.nav-link.is-active { color: var(--ink-900); font-weight: 700; }
+.nav-link.is-active::after { transform: scaleX(1); }
+.menu-btn { width: 44px; height: 44px; display: grid; place-items: center; color: var(--ink-900); background: none; }
+.mobile-nav { position: fixed; inset: var(--header-h) 0 0; z-index: 49; background: var(--white);
+  opacity: 0; visibility: hidden; transition: opacity .3s var(--ease), visibility .3s; }
+.mobile-nav.is-open { opacity: 1; visibility: visible; }
+.mobile-nav a { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; color: var(--ink-900); font-size: 18px; font-weight: 700; }
+.mobile-nav a.is-active { color: var(--accent); }
+
+/* ---------- Hero / Page head：白 ---------- */
+.hero { position: relative; padding: calc(var(--header-h) + clamp(120px, 16vw, 220px)) 0 clamp(120px, 14vw, 200px); background: var(--white); }
+.page-head { position: relative; padding: calc(var(--header-h) + clamp(96px, 13vw, 180px)) 0 clamp(48px, 6vw, 88px); background: var(--white); }
+.crumb { display: flex; gap: 10px; font-size: 12px; color: var(--text-faint); }
+.crumb a:hover { color: var(--accent); }
+
+/* ---------- Steps ---------- */
+.step { position: relative; padding: 0; border: 0; }
+
+/* ---------- Message ---------- */
+.portrait { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: var(--white); border-radius: 0; }
+.portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+.sig-role { font-size: 12px; color: var(--text-faint); }
+.sig-name { font-size: clamp(1.5rem, 2.4vw, 2rem); font-weight: 500; color: var(--text-heading); line-height: 1.3; }
+.sig-hand { font-family: "Yuji Syuku", "Hiragino Mincho ProN", "Yu Mincho", serif; font-weight: 400; font-size: clamp(2.25rem, 3.6vw, 3rem); letter-spacing: .14em; line-height: 1.2; color: var(--ink-900); }
+
+/* ---------- Definition list：行罫のみ ---------- */
+.dl-row { display: grid; grid-template-columns: 1fr; gap: 4px; padding: 28px 0; border-bottom: 1px solid var(--hairline); }
+@media (min-width: 640px) { .dl-row { grid-template-columns: 200px 1fr; gap: 40px; } }
+.dl-row dt { font-size: 14px; font-weight: 700; color: var(--text-heading); line-height: 2; }
+.dl-row dd { color: var(--text-body); line-height: 2; }
+
+/* ---------- Form：下線だけの入力欄 ---------- */
+.field label.lbl, .legend { display: flex; align-items: baseline; gap: 10px; font-size: 14px; font-weight: 700; color: var(--text-heading); margin-bottom: 6px; transition: color .3s; }
+.field:focus-within label.lbl { color: var(--accent); }
+.req, .opt { font-size: 11px; font-weight: 600; line-height: 1; background: none; padding: 0; }
+.req { color: var(--accent); }
+.opt { color: var(--text-faint); }
+.input { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--border-strong); border-radius: 0;
+  padding: 14px 0; color: var(--text-heading); font-size: 16px; line-height: 1.6;
+  transition: border-color .25s var(--ease); }
+.input::placeholder { color: #B8BEC6; }
+.input:hover { border-bottom-color: var(--ink-500); }
+.input:focus { outline: none; border-bottom-color: var(--accent); box-shadow: inset 0 -1px 0 var(--accent); }
+select.input { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.8'%3E%3Cpath d='m6 9 6 6 6-6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 4px center; background-size: 16px; }
+textarea.input { resize: vertical; min-height: 160px; line-height: 1.9; }
+.field-msg { display: none; align-items: center; gap: 6px; margin-top: 10px; font-size: 13px; font-weight: 500; color: var(--danger); line-height: 1.6; }
+.field-msg svg { width: 14px; height: 14px; flex: none; }
+.field.is-error .input { border-bottom-color: var(--danger); box-shadow: inset 0 -1px 0 var(--danger); }
+.field.is-error .field-msg { display: flex; animation: msgIn .3s var(--ease); }
+@keyframes msgIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.choice { display: flex; align-items: center; gap: 12px; padding: 10px 0; cursor: pointer; color: var(--text-heading); font-size: 15px; line-height: 1.5; }
+.choice:has(input:checked) { font-weight: 700; }
+.radio { appearance: none; -webkit-appearance: none; flex: none; width: 18px; height: 18px; margin: 0; border-radius: 50%;
+  border: 1.5px solid var(--border-strong); display: grid; place-content: center; background: var(--white); transition: border-color .25s; }
+.radio::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); transform: scale(0); transition: transform .25s var(--ease); }
+.radio:checked { border-color: var(--accent); }
+.radio:checked::before { transform: scale(1); }
+.check { appearance: none; -webkit-appearance: none; flex: none; width: 18px; height: 18px; margin: 5px 0 0; border-radius: 2px;
+  border: 1.5px solid var(--border-strong); display: grid; place-content: center; background: var(--white); transition: background-color .25s, border-color .25s; cursor: pointer; }
+.check::before { content: ""; width: 9px; height: 5px; border-left: 2px solid var(--text-inverse); border-bottom: 2px solid var(--text-inverse); transform: rotate(-45deg) scale(0); margin-top: -2px; transition: transform .2s var(--ease); }
+.check:checked { background: var(--accent); border-color: var(--accent); }
+.check:checked::before { transform: rotate(-45deg) scale(1); }
+.field.is-error .check { border-color: var(--danger); }
+.form-alert { display: none; gap: 10px; align-items: flex-start; color: var(--danger); font-size: 14px; line-height: 1.8; }
+.form-alert.is-show { display: flex; animation: msgIn .3s var(--ease); }
+
+/* ---------- Footer ---------- */
+.site-footer { background: var(--white); }
+.foot-link { color: var(--text-body); transition: color .25s; }
+.foot-link:hover { color: var(--accent); }
+
+/* ---------- Motion ---------- */
+.js .reveal { opacity: 0; transform: translateY(12px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.js .reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
